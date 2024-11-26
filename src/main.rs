@@ -7,12 +7,16 @@ struct Node<'a> {
 }
 
 //min heap struct
-struct MinHeap {
+struct MinHeap<'a> {
     //current size
     size: u32,
     
     //capacity
     capacity: u32,
+
+    //array of nodes in the tree
+        //need to find a valid format that works like the one here but doesnt give an error
+    nodes: [&'a mut Node<'a>; capacity]
 }
 
 //function that allocates a new node given its char and freq
@@ -21,8 +25,8 @@ fn new_node(data: char, freq: u32) -> &'static Node<'static>{
     &Node{
         char:data,
         freq: freq,
-        left_node: //todo
-        right_node: //todo
+        left_node: None,
+        right_node: None,
     }
 }
 
@@ -31,7 +35,8 @@ fn new_node(data: char, freq: u32) -> &'static Node<'static>{
 fn create_min_heap(capacity: u32) -> MinHeap{
     MinHeap{
         size: 0,
-        capacity: capacity
+        capacity: capacity,
+        
     }
 }
 
