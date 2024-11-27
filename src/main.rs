@@ -1,20 +1,14 @@
 //node for huffman tree
-struct Node <'a>{
+struct Node {
     //specific char
     char: char,
 
     //frequency of the char
     freq: u32,
-
-    //reference to the left node
-    left_node: &'a mut Node<'a>,
-
-    //reference to the right node
-    right_node: &'a mut Node<'a>
 }
 
 //min heap struct
-struct MinHeap<'a> {
+struct MinHeap {
     //current size
     size: u32,
     
@@ -22,55 +16,55 @@ struct MinHeap<'a> {
     capacity: u32,
 
     //array of nodes in the tree
-    nodes: Vec<&'a mut Node>
+    //root will be at nodes[0]
+    //for any ith node at node[i]
+        //arr[(i-1)/2] = parent node
+        //arr[(2*i)+1] = left child node
+        //arr[(2*i)+2] = right child node
+    nodes: Vec<Node>
 }
 
-//function that allocates a new node given its char and freq and adds it to the heap
-fn add_new_node(data: char, freq: u32, tree: &'a mut MinHeap<'a>){
+
+impl MinHeap{
+    //adds a node to the unsorted node vector with char its freq
+    fn create_node(&mut self, char: char, freq: u32) -> Node{
+            Node {
+                char,
+                freq
+            }
+    }
+
+    //adds the passed in node to the min heap vector
+    fn add_node(&mut self, node_to_add: Node){
+        self.nodes.push(node_to_add)
+    }
+
+    //sorts all of the nodes in the array so that they represent a min heap
+    //after this is done, self.nodes will be a min heap
+    fn heapify(&mut self){
+        //todo
+    }
+
+}
+
+//creates a minimum heap out of unsorted node vector
+fn create_min_heap(heap: &mut MinHeap){
     //todo
 }
 
-//creates a min heap for a given capacity
-//returns ownership to a minHeap
-fn create_min_heap(capacity: u32) -> MinHeap<'a>{
+//builds the huffman tree out of the passed in min heap
+fn build_huffman_tree(heap: &mut MinHeap){
     //todo
 }
 
-//swaps two min heap nodes
-fn swap_min_heap_node(node1: &'a mut Node<'a>, node2: &'a mut Node<'a>){
+
+//prints the huffman codes for the input data
+fn huffman_codes(chars: &mut [char], freq: &mut [u32]){
     //todo
 }
-
-//heapify the tree
-fn min_heapify(tree: &'a mut MinHeap<'a>, index: u32){
-    //todo
-}
-
-//extracts minimum value node from heap
-fn extract_min(heap: &'a mut MinHeap<'a>) -> &'a mut Node<'a> {
-    //todo
-}
-
-//builds the min heap
-fn build_min_heap(heap: &'a mut MinHeap<'a>){
-    //todo
-}
-
-//creats a min heap of capacity equal to size
-//inserts all chars of data[] in min heap
-fn create_and_build_min_heap(data: Vec<char>, freq: Vec<u32>, size: u32)->&'a mut MinHeap<'a>{
-    //todo
-}
-
-//builds huffman tree
-//todo
-fn build_huffman_tree()
-
-//builds and prints huffman tree
-//todo
-fn HuffmanCodes()
 
 fn main(){
     //example input data
-    let input_data: [char; 5] = ['a', 'b', 'c', 'd', 'e'];
+    let input_data: [char; 7] = ['a', 'u', 'c', 'd', 'b', 'f', 'y'];
+    let freq: [i32; 7] = [32, 100, 50, 37, 1, 8, 46];
 }
