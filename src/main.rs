@@ -1,17 +1,18 @@
 //node for min heap
 struct Node<'a> {
     //specific char
-    char: char,
+    char: Option<char>,
 
     //frequency of the char
+    //note OPTIONAL
     freq: u32,
 
     //left child
-    //note OPTIONAL :)
+    //note OPTIONAL
     left: Option<&'a Node<'a>>,
 
     //right child
-    //note OPTIONAL :)
+    //note OPTIONAL
     right: Option<&'a Node<'a>>
 }
 
@@ -32,20 +33,19 @@ struct MinHeap<'a> {
 }
 
 
-    //adds a node to the unsorted node vector with char its freq
-    fn create_node<'a>(heap: &mut MinHeap, char: char, freq: u32) -> Node<'a>{
+    //returns a new node
+    fn create_node<'a>(char: Option<char>, freq: u32, left: Option<&'a Node<'a>>, right: Option<&'a Node<'a>>) -> Node<'a>{
             Node {
                 char,
                 freq,
-                left: None,
-                right: None
+                left,
+                right
             }
     }
 
     //adds the passed in node to the min heap vector and heapifys it
-    fn add_node<'a>(heap: &mut MinHeap<'a>, node_to_add: Node<'a>){
+    fn add_heap_node<'a>(heap: &mut MinHeap<'a>, node_to_add: Node<'a>){
         heap.nodes.push(node_to_add);
-        heapify(heap,heap.size);
     }
 
     //heapifys a single node
@@ -76,7 +76,7 @@ struct MinHeap<'a> {
 
         //creates a minimum heap out of unsorted node vector
         //based off of GFG buildHeap function
-        fn create_min_heap(heap: &mut MinHeap){
+        fn build_min_heap(heap: &mut MinHeap){
             //start at index of last non-leaf
             let n: usize = heap.size;
 
@@ -99,21 +99,7 @@ struct MinHeap<'a> {
     //3. Repeat steps 1 and 2 until the heap contains only one node. The remaining node is the root node and the tree is complete.
 
 fn build_huffman_tree(heap: &mut MinHeap){
-
-    while(heap.size > 1){
-        let left_node: &Node = &heap.nodes.pop().unwrap();
-        let right_node: &Node = &heap.nodes.pop().unwrap();
-        
-        let new_huffman_node = Node {
-            freq: left_node.freq + right_node.freq,
-            char: 'a',
-            left: Some(left_node),
-            right: Some(right_node)
-            
-        };
-        //adds new huffman node to heap
-        add_node(heap,new_huffman_node);
-    }
+    //todo
 }   
 
 
@@ -137,7 +123,7 @@ fn build_huffman_tree(heap: &mut MinHeap){
         }
     
         //Reached a leaf, so print it's char and code
-        println!("{}, {}", current_node.char, code);
+        println!("{}, {}", current_node.char.unwrap(), code);
     }
 
 //prints the huffman codes for the input data
@@ -148,11 +134,21 @@ fn huffman_codes(chars: &[char], freq: &[u32]){
         nodes: vec![]
     };
 
-    
+    //fills the heap's vector with nodes
+    for i in (0..heap.size){
+        add_heap_node(&mut heap, create_node(Some(chars[i]), freq[i], None, None));
+    }
 
-    
+    //build a min heap
+    build_min_heap(&mut heap);
 
-    
+
+    //creates a huffman tree from the min heap
+    build_huffman_tree(&mut heap);
+
+    //prints the huffman codes
+    let mut code = String::from("");
+    depth_first_search_print(&heap.nodes[0], &mut code);
 
 
 }
