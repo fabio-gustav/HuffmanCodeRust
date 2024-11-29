@@ -100,17 +100,17 @@ struct MinHeap<'a> {
 
 
     //returns a huffman tree
-fn build_huffman_tree(heap: &mut MinHeap){
+// fn build_huffman_tree(heap: &mut MinHeap){
         
-        while(heap.size > 1){
-        let left_node: &mut Node = &mut heap.nodes.pop().unwrap();
-        let right_node: &mut Node = &mut heap.nodes.pop().unwrap();
+//         while(heap.size > 1){
+//         let left_node: &mut Node = &mut heap.nodes.pop().unwrap();
+//         let right_node: &mut Node = &mut heap.nodes.pop().unwrap();
     
-        let new_huffman_node: Node = create_node(None, left_node.freq+right_node.freq, Some(left_node), Some(right_node));
-    //adds new huffman node to heap
-        add_heap_node(heap,new_huffman_node);
-        }
-}
+//         let new_huffman_node: Node = create_node(None, left_node.freq+right_node.freq, Some(left_node), Some(right_node));
+//     //adds new huffman node to heap
+//         add_heap_node(heap,new_huffman_node);
+//         }
+// }
 
 
 //depth first search to find chars
@@ -154,7 +154,7 @@ fn huffman_codes(chars: &[char], freq: &[u32]){
 
 
     //creates a huffman tree from the min heap
-    build_huffman_tree(&mut heap);
+    // build_huffman_tree(&mut heap);
 
     //prints the huffman codes
     let mut code = String::from("");
