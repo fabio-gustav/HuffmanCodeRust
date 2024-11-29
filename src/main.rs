@@ -98,9 +98,19 @@ struct MinHeap<'a> {
     //  Add this node to the min heap
     //3. Repeat steps 1 and 2 until the heap contains only one node. The remaining node is the root node and the tree is complete.
 
+
+    //returns a huffman tree
 fn build_huffman_tree(heap: &mut MinHeap){
-    //todo
-}   
+        
+        while(heap.size > 1){
+        let left_node: &mut Node = &mut heap.nodes.pop().unwrap();
+        let right_node: &mut Node = &mut heap.nodes.pop().unwrap();
+    
+        let new_huffman_node: Node = create_node(None, left_node.freq+right_node.freq, Some(left_node), Some(right_node));
+    //adds new huffman node to heap
+        add_heap_node(heap,new_huffman_node);
+        }
+}
 
 
 //depth first search to find chars
