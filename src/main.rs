@@ -1,5 +1,3 @@
-use std::thread::current;
-
 //node for min heap
 struct Node<'a> {
     //specific char
@@ -102,11 +100,19 @@ struct MinHeap<'a> {
 
 
     //returns a huffman tree
-    fn build_huffman_tree(heap: MinHeap) -> Node{
-        //a tree will be built from a single node as its root
-        //TODO
-
-    }   
+fn build_huffman_tree(heap: &mut MinHeap){
+        
+        while(heap.size > 1){
+            //TODO
+        let left_node: &mut Node = 
+        let right_node: &mut Node = 
+    
+        let new_huffman_node: Node = create_node(None, left_node.freq+right_node.freq, Some(left_node), Some(right_node));
+        
+        //adds new huffman node to heap
+        add_heap_node(heap,new_huffman_node);
+        }
+}
 
 
 //depth first search to find chars
@@ -129,9 +135,7 @@ struct MinHeap<'a> {
         }
     
         //Reached a leaf, so print it's char and code
-        if current_node.char.is_some(){
-            println!("{}, {}", current_node.char.unwrap(), code);
-        }
+        println!("{}, {}", current_node.char.unwrap(), code);
     }
 
 //prints the huffman codes for the input data
@@ -143,7 +147,7 @@ fn huffman_codes(chars: &[char], freq: &[u32]){
     };
 
     //fills the heap's vector with nodes
-    for i in 0..heap.size{
+    for i in (0..heap.size){
         add_heap_node(&mut heap, create_node(Some(chars[i]), freq[i], None, None));
     }
 
@@ -152,11 +156,11 @@ fn huffman_codes(chars: &[char], freq: &[u32]){
 
 
     //creates a huffman tree from the min heap
-    let mut huffman_tree: Node = build_huffman_tree(heap);
+    build_huffman_tree(&mut heap);
 
     //prints the huffman codes
     let mut code = String::from("");
-    depth_first_search_print(&mut huffman_tree, &mut code);
+    depth_first_search_print(&heap.nodes[0], &mut code);
 
 
 }
