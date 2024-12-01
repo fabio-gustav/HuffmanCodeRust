@@ -111,6 +111,7 @@ fn extract_min<'a>(heap: &'a mut MinHeap<'a>) -> Node<'a>{
     temp_node
 }
 
+
     //builds a huffman tree
 fn build_huffman_tree(heap: &mut MinHeap){
     //todo
