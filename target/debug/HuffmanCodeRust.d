@@ -1,1 +1,1 @@
-C:\Users\burke\Documents\GitHub\HuffmanCodeRust\target\debug\HuffmanCodeRust.exe: C:\Users\burke\Documents\GitHub\HuffmanCodeRust\src\main.rs
+C:\Users\Nick2\Desktop\Project\HuffmanCodeRust\target\debug\HuffmanCodeRust.exe: C:\Users\Nick2\Desktop\Project\HuffmanCodeRust\src\main.rs
