@@ -9,13 +9,13 @@ fn assign_codes(current_node: &Box<Node>, codes: &mut HashMap<char, i32>, curren
     //there is a left node from the current node, so add 0 to the code and recurse from that node
     if (current_node.left.is_some()){
         current_code.push('0');
-        assign_codes(&current_node.left, codes, current_code);
+        assign_codes(&current_node.left.unwrap(), codes, current_code);
     }
 
     //there is a right node from the current node, so add 1 to the code and recurse from that node
     if (current_node.right.is_some()){
         current_code.push('1');
-        assign_codes(&current_node.right, codes, current_code);
+        assign_codes(&current_node.right.unwrap(), codes, current_code);
     }
 
     //found a potential leaf node, check
@@ -60,12 +60,12 @@ fn decode(to_decode: String, head: Box<Node>) -> String{
         
         //next num is a 0, so traverse left in the tree
         if (char == '0'){
-            current_node = &current_node.left;
+            current_node = &current_node.left.unwrap();
         }
 
         //next num is a 1, so traverse right in the tree
         else{
-            current_node = &current_node.right;
+            current_node = &current_node.right.unwrap();
         }
 
     }
@@ -76,5 +76,6 @@ fn decode(to_decode: String, head: Box<Node>) -> String{
 }
 
 fn main(){
-
+    let test_string = "abcaabbccbaaee";
+    
 }
