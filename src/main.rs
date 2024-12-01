@@ -1,4 +1,36 @@
 use std::collections::HashMap;
+use std::fs;
+use std::io::Write;
+
+fn main() {
+    
+
+    //reads from a input file that contains the input string
+    let input: String = fs::read_to_string("test.txt").expect("Unable to read file");
+
+    //TODO: code to build huffman tree
+
+
+    //assigns huffman codes to specific chars in the string
+    let current_code:String = String::new();
+    let mut codes:HashMap<char, i32> = HashMap::new();
+    assign_codes(&huffman_tree_head, &mut codes, current_code);
+
+    //encodes the input string
+    let encoded_string:String = encode(&current_code, &codes);
+
+    //writes the encoded string to an output file
+    //creates a new output file
+    let mut output_file: fs::File = fs::File::create("output.txt").expect("File already exists");
+    output_file.write_all(encoded_string.as_bytes()).expect("Could not write to file");
+
+    
+    //use this function if you want to decode the string you just encoded
+    //encode(input, &huffman_tree_head);
+
+
+}
+
 
 //takes in a root of a huffman tree and hashmap mutable reference 
 //and assigns huffman codes to the specific chars
@@ -28,7 +60,7 @@ fn assign_codes(current_node: &Box<Node>, codes: &mut HashMap<char, i32>, curren
 //encodes a specific message, encode it by concatenating all of the huffman codes for 
 //each specific char
 //returns that encoded string
-fn encode(input: &str, hash_map: HashMap<char, i32>) -> String{
+fn encode(input: &str, hash_map: &HashMap<char, i32>) -> String{
     let mut encoded_string: String = "".to_string();
     
     //for every char in the string, look up its corresponding code in the hashmap table
@@ -75,7 +107,4 @@ fn decode(to_decode: String, head: Box<Node>) -> String{
 
 }
 
-fn main(){
-    let test_string = "abcaabbccbaaee";
-    
-}
+
