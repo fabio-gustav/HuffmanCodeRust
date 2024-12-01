@@ -1,4 +1,6 @@
 //node for min heap
+
+#[derive(Clone)]
 struct Node<'a> {
     //specific char
     char: Option<char>,
@@ -43,7 +45,7 @@ struct MinHeap<'a> {
             }
     }
 
-    //adds the passed in node to the min heap vector and heapifys it
+    //adds the passed in node to the min heap vector
     fn add_heap_node<'a>(heap: &mut MinHeap<'a>, node_to_add: Node<'a>){
         heap.nodes.push(node_to_add);
     }
@@ -99,19 +101,19 @@ struct MinHeap<'a> {
     //3. Repeat steps 1 and 2 until the heap contains only one node. The remaining node is the root node and the tree is complete.
 
 
-    //returns a huffman tree
+    //extracts minimum value from heap
+    //based on the GFG function
+fn extract_min<'a>(heap: &'a mut MinHeap<'a>) -> Node<'a>{
+    let temp_node: Node = heap.nodes[0].clone();
+    heap.nodes[0] = heap.nodes.pop().unwrap();
+    heap.size -= 1;
+    heapify(heap, 0);
+    temp_node
+}
+
+    //builds a huffman tree
 fn build_huffman_tree(heap: &mut MinHeap){
-        
-        while(heap.size > 1){
-            //TODO
-        let left_node: &mut Node = 
-        let right_node: &mut Node = 
-    
-        let new_huffman_node: Node = create_node(None, left_node.freq+right_node.freq, Some(left_node), Some(right_node));
-        
-        //adds new huffman node to heap
-        add_heap_node(heap,new_huffman_node);
-        }
+    //todo
 }
 
 
