@@ -75,7 +75,7 @@ fn encode(input: &str, hash_map: &HashMap<char, i32>) -> String{
 }
 
 //decodes a specific message given the encoded string and head of the huffman tree
-fn decode(to_decode: String, head: Box<Node>) -> String{
+fn decode(to_decode: String, head: &Box<Node>) -> String{
     //go left if the next char is a 0
     //go right if the next char is a 1
     
@@ -89,15 +89,19 @@ fn decode(to_decode: String, head: Box<Node>) -> String{
     for char in to_decode.chars(){
         //if the current node contains a char, it's a leaf node so add it to 
         //the string and re-traverse the tree starting from the head
-        
+        if (current_node.character.is_some()){
+            decoded_string.push(current_node.character.unwrap());
+            current_node = &head
+        }
+
         //next num is a 0, so traverse left in the tree
         if (char == '0'){
-            current_node = &current_node.left.unwrap();
+            current_node = current_node.left.as_ref().unwrap();
         }
 
         //next num is a 1, so traverse right in the tree
         else{
-            current_node = &current_node.right.unwrap();
+            current_node = current_node.right.as_ref().unwrap();
         }
 
     }
@@ -106,5 +110,3 @@ fn decode(to_decode: String, head: Box<Node>) -> String{
     decoded_string
 
 }
-
-
