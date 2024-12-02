@@ -32,30 +32,6 @@ fn main() {
 }
 
 
-//takes in a root of a huffman tree and hashmap mutable reference 
-//and assigns huffman codes to the specific chars
-fn assign_codes(current_node: &Box<Node>, codes: &mut HashMap<char, i32>, current_code: String){
-    //left == add 0
-    //right == add 1
-
-    //there is a left node from the current node, so add 0 to the code and recurse from that node
-    if (current_node.left.is_some()){
-        current_code.push('0');
-        assign_codes(&current_node.left.unwrap(), codes, current_code);
-    }
-
-    //there is a right node from the current node, so add 1 to the code and recurse from that node
-    if (current_node.right.is_some()){
-        current_code.push('1');
-        assign_codes(&current_node.right.unwrap(), codes, current_code);
-    }
-
-    //found a potential leaf node, check
-    if(current_node.ch.is_some()){
-        //found char, so add it to the vector along with the current code
-        codes.insert(current_node.ch.unwrap(), current_node.freq);
-    }
-}
 
 //encodes a specific message, encode it by concatenating all of the huffman codes for 
 //each specific char
