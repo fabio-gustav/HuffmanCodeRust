@@ -6,40 +6,6 @@ use std::fs;
 use std::io::Write;
 
 
-fn main() {
-    
-
-    //reads from a input file that contains the input string
-    let input: String = fs::read_to_string("test.txt").expect("Unable to read file");
-
-    //TODO: code to build huffman tree
-    let map = frequency::frequency(input);
-    
-    let mut huffman_nodes:Vec<Box<Node>> = map.iter().map(|nodes| Box::new(create_node(Some(*nodes.0), *nodes.1))).collect();
-    
-    build_huffman_tree(&mut huffman_nodes);
-
-    //assigns huffman codes to specific chars in the string
-    let mut huffman_codes:HashMap<char, String> = HashMap::new();
-    assign_huffman_codes(&huffman_nodes.pop().unwrap(), &mut huffman_codes,"".to_string());
-
-    //encodes the input string
-    let encoded_string:String = encode(&current_code, &codes);
-
-    //writes the encoded string to an output file
-    //creates a new output file
-    let mut output_file: fs::File = fs::File::create("output.txt").expect("File already exists");
-    output_file.write_all(encoded_string.as_bytes()).expect("Could not write to file");
-
-    
-    //use this function if you want to decode the string you just encoded
-    //encode(input, &huffman_tree_head);
-
-
-}
-
-
-
 //node for min heap
 struct Node {
     
@@ -73,7 +39,7 @@ struct Node {
 //encodes a specific message, encode it by concatenating all of the huffman codes for 
 //each specific char
 //returns that encoded string
-fn encode(input: &str, hash_map: &HashMap<char, i32>) -> String{
+fn encode(input: &str, hash_map: &HashMap<char, String>) -> String {
     let mut encoded_string: String = "".to_string();
     
     //for every char in the string, look up its corresponding code in the hashmap table
@@ -86,7 +52,11 @@ fn encode(input: &str, hash_map: &HashMap<char, i32>) -> String{
     encoded_string
 
     //returns a huffman tree
+
+}
+
 fn build_huffman_tree( huffman_nodes:&mut Vec<Box<Node>>){
+    
     while huffman_nodes.len() > 1 {
 
         huffman_nodes.sort_by(|node_a,node_b| (&(node_b.freq)).cmp(&(node_a.freq)));
@@ -109,19 +79,16 @@ fn decode(to_decode: String, head: &Box<Node>) -> String{
     //go right if the next char is a 1
     
     //holds a reference to the current node in the tree traversal
-    let current_node: &Box<Node> = &head;
+    let mut current_node: &Box<Node> = &head;
 
     //holds the current decoded string
-    let decoded_string: String = "".to_string();
+    let mut decoded_string: String = "".to_string();
 
     //loops through the input data
     for char in to_decode.chars(){
         //if the current node contains a char, it's a leaf node so add it to 
         //the string and re-traverse the tree starting from the head
-        if (current_node.character.is_some()){
-            decoded_string.push(current_node.character.unwrap());
-            current_node = &head
-        }
+        
 
 
         //next num is a 0, so traverse left in the tree
@@ -134,11 +101,21 @@ fn decode(to_decode: String, head: &Box<Node>) -> String{
             current_node = current_node.right.as_ref().unwrap();
         }
 
+
+        if (current_node.character.is_some()){
+            decoded_string.push(current_node.character.unwrap());
+            current_node = &head;
+            
+        }
+
     }
 
     //return the completed string
+
     decoded_string
-  
+
+}
+
 //prints the huffman codes for the input data
 fn assign_huffman_codes(assign_node:&Box<Node>,codes:&mut HashMap<char, String>,encoded_value:String){
     
@@ -149,12 +126,49 @@ fn assign_huffman_codes(assign_node:&Box<Node>,codes:&mut HashMap<char, String>,
     else {
 
         if let Some(ref left_node) = assign_node.left {
-            assign_huffman_codes(left_node, codes, encoded_value.clone() + "1");
+            assign_huffman_codes(left_node, codes, encoded_value.clone() + "0");
         }
         if let Some(ref right_node) = assign_node.right {
-            assign_huffman_codes(right_node, codes, encoded_value + "0");
+            assign_huffman_codes(right_node, codes, encoded_value + "1");
         }
     }
 
+
+}
+
+
+fn main() {
+    
+
+    //reads from a input file that contains the input string
+    let input: String = fs::read_to_string("input.txt").expect("Unable to read file");
+    println!("{:?}",input);
+    //TODO: code to build huffman tree
+    let map = frequency::frequency(input.as_str());
+    println!("{:?}",map);
+    let mut huffman_nodes:Vec<Box<Node>> = map.iter().map(|nodes| Box::new(create_node(Some(*nodes.0), *nodes.1))).collect();
+    
+    build_huffman_tree(&mut huffman_nodes);
+
+    let head_node = &huffman_nodes.pop().unwrap();
+    println!("{},{},{}",head_node.left.as_ref().unwrap().freq,head_node.left.as_ref().unwrap().freq,head_node.freq);
+    //assigns huffman codes to specific chars in the string
+    let mut huffman_codes:HashMap<char, String> = HashMap::new();
+    assign_huffman_codes(head_node, &mut huffman_codes,"".to_string());
+
+    println!("{:?}",huffman_codes);
+    //encodes the input string
+    let encoded_string:String = encode(&input, &huffman_codes);
+
+    //writes the encoded string to an output file
+    //creates a new output file
+    let mut output_file: fs::File = fs::File::create("output.txt").expect("File already exists");
+    output_file.write_all(encoded_string.as_bytes()).expect("Could not write to file");
+
+    let decodemessage: String = fs::read_to_string("output.txt").expect("Unable to read file");
+    println!("{}",decodemessage);
+    //use this function if you want to decode the string you just encoded
+
+    println!("{}",decode(decodemessage, head_node));
 
 }
