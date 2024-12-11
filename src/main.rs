@@ -179,7 +179,7 @@ fn main() {
     output_file.write_all(&encoded_string.as_bytes()).expect("Could not write to file");
 
     //use the decode function if you would like to decode the string you just encoded
-    //decode(to_decode, root)
+    //decode(encoded_string, root_node);
 
 
 }
